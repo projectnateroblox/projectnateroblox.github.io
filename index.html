@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ozone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #0a0a12;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    html, body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      width: 200vw;
+      height: 200vh;
+      background:
+        linear-gradient(90deg, rgba(220, 38, 38, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(220, 38, 38, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 40s linear infinite;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      will-change: transform;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-50%, -50%); }
+    }
+
+    .nav {
+      padding: 1.5rem 10%;
+      background: rgba(10, 10, 18, 0.95);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(220, 38, 38, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      height: 50px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: rotate(-5deg) scale(1.1);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: #fff;
+      text-decoration: none;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      min-height: 76vh;
+      display: flex;
+      align-items: center;
+      padding: 12% 10% 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      flex: 1;
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ui-container {
+      flex: 1;
+      position: relative;
+      perspective: 1000px;
+      margin-left: 5rem;
+      filter: drop-shadow(0 0 30px rgba(220, 38, 38, 0.3));
+      transform-style: preserve-3d;
+      right: -150px;
+      transform: scale(0.9);
+    }
+
+    .ui-image {
+      width: 800px;
+      height: auto;
+      transform-style: preserve-3d;
+      border: 2px solid rgba(220, 38, 38, 0.2);
+      border-radius: 15px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      object-fit: contain;
+      animation: float 6s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(45deg, #fff 20%, #dc2626 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: textReveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 3rem 10% 1rem;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 2rem;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(220, 38, 38, 0.1);
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      transform: translateY(100px);
+      opacity: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .feature-card:hover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at var(--x) var(--y),
+        rgba(220, 38, 38, 0.1) 0%,
+        transparent 60%);
+      pointer-events: none;
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #dc2626, #b91c1c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: transform 0.3s ease;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(10, 10, 18, 0.95);
+      margin-top: 2rem;
+      border-top: 1px solid rgba(220, 38, 38, 0.1);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+
+    @keyframes textReveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding-top: 30%;
+        flex-direction: column;
+      }
+
+      .ui-container {
+        margin-left: 0;
+        width: 100%;
+        padding: 0 1rem;
+        right: -50px;
+        transform: scale(0.8);
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .ui-image {
+        width: 120%;
+        max-width: 600px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <img src="images/4XK0Dog.png" class="logo" alt="Nate" />
+    <div class="nav-links">
+      <a href="https://discord.gg/SR4T4aM3Kq" class="nav-link" target="_blank">Download</a>
+      <a href="https://ellernate.com" class="nav-link" target="_blank">Tutorial</a>
+      <a href="https://discord.gg/SR4T4aM3Kq" class="nav-link" target="_blank">Discord</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>The Ultimate<br><span class="gradient-text">External Cheat Experience</span></h1>
+    </div>
+
+    <div class="ui-container" id="uiContainer">
+      <img src="images/tkZd4S2.png" class="ui-image" alt="Ozone UI" id="uiImage" />
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="feature-card">
+      <i class="fas fa-bolt feature-icon"></i>
+      <h3>Top-Tier Execution</h3>
+      <p>Advanced external memory manipulation with zero detection risk</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-code feature-icon"></i>
+      <h3>Monaco LSP Suite</h3>
+      <p>Professional development environment with intelligent code completion</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-shield-alt feature-icon"></i>
+      <h3>Secure Environment</h3>
+      <p>Protected memory space with anti-tamper safeguards</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Project Nate Executor. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(card => {
+      observer.observe(card);
+    });
+
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      uiContainer.style.transform = `translateY(${scrollY * 0.2}px)`;
+    });
+
+    setInterval(() => {
+      uiImage.style.transform += ' translate(2px)';
+      setTimeout(() => {
+        uiImage.style.transform = uiImage.style.transform.replace(' translate(2px)', '');
+      }, 50);
+    }, 5000);
+  </script>
+</body>
+</html>
